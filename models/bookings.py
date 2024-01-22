@@ -4,7 +4,9 @@ from datetime import date
 class Bookings(Model):
     json_path = 'data/booking.json'
     
-    
+    def __init__(self, id):
+        self.id = id
+        
     def create():
         name = input("What's your name: ")
         orderDate = date.today().isoformat()
@@ -28,3 +30,10 @@ class Bookings(Model):
         
         print(newBooking)
         return newBooking
+    
+    def update(id):
+        print(id)
+        booking_data = Bookings.view(str(id))
+
+        
+        

@@ -24,7 +24,7 @@ class Model(ABC):
                     if int(id) == book.get('id'):
                         print(f'View {id}')
                         print(book)
-                        break
+                        return book
         else:
             print(f'Error: JSON path for {cls.__name__}')
             
@@ -37,7 +37,7 @@ class Model(ABC):
         pass
     
     @abstractmethod
-    def update(self, id):
+    def update(self):
         pass
 
 class Rooms(Model):

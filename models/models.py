@@ -25,8 +25,6 @@ class Model(ABC):
                         print(f'View {id}')
                         print(book)
                         break
-                    else:
-                        print("false")
         else:
             print(f'Error: JSON path for {cls.__name__}')
             
@@ -35,12 +33,12 @@ class Model(ABC):
          pass
     
     @abstractmethod
-    def create(cls):
+    def create(self):
         pass
     
     @abstractmethod
-    def update(cls, id):
-        pass   
+    def update(self, id):
+        pass
 
 class Rooms(Model):
     json_path = 'data/rooms.json'

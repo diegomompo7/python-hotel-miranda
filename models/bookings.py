@@ -3,10 +3,11 @@ from datetime import date
 
 class Bookings(Model):
     json_path = 'data/booking.json'
-        
-    def create(cls):
+    
+    
+    def create():
         name = input("What's your name: ")
-        orderDate = date.today()
+        orderDate = date.today().isoformat()
         check_in = input("Date to entry (YYYY-MM-DD): ")
         hour_in = input("Date to entry (HH:MM): ")
         check_out = input("Date to entry (YYYY-MM-DD): ")
@@ -26,3 +27,4 @@ class Bookings(Model):
         }
         
         print(newBooking)
+        return newBooking

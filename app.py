@@ -1,12 +1,12 @@
-from models.models import *
 from models.bookings import Bookings
+from models.models import *
 import argparse
 
     
 def bookings():
     type = input("Insert the type of select (list, view, create, udpate, delete): ")
     
-    actionBooking= {
+    actionBooking = {
         "list": Bookings.list,
         "view": Bookings.view,
         "create": Bookings.create,
@@ -14,8 +14,8 @@ def bookings():
         "delete": Bookings.delete, 
     }
     
-    if type or actionBooking:
-        if type=="list" or type=="create":
+    if type in actionBooking:
+        if type=="list" or type =="create":
             actionBooking[type]()
         else: 
             id = input("Insert the id of booking: ")

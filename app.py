@@ -1,5 +1,6 @@
 from models.bookings import Bookings
 from models.rooms import Rooms
+from models.contacts import Contacts
 from models.models import *
 import argparse
 
@@ -8,7 +9,7 @@ def bookings():
     type = input("Insert the type of select (list, view, create, udpate, delete): ")
     
     actionBooking = {
-        "list": Bookings.list,
+        "list": list,
         "view": Bookings.view,
         "create": Bookings.create,
         "update": Bookings.update, 
@@ -17,6 +18,7 @@ def bookings():
     
     if type in actionBooking:
         if type=="list" or type =="create":
+            print(actionBooking[type])
             actionBooking[type]()
         else: 
             id = input("Insert the id of booking: ")
@@ -45,8 +47,25 @@ def rooms():
     else:
         print(f"{type} is not a type of select")
 
-def list_contacts():
-    Contact.list()
+def contacts():
+    type = input("Insert the type of select (list, view, create, udpate, delete): ")
+    
+    actionContact = {
+        "list": Contacts.list,
+        "view": Contacts.view,
+        "create": Contacts.create,
+        "update": Contacts.update, 
+        "delete": Contacts.delete, 
+    }
+    
+    if type in actionContact:
+        if type=="list" or type =="create":
+            actionContact[type]()
+        else: 
+            id = input("Insert the id of contact: ")
+            actionContact[type](id)
+    else:
+        print(f"{type} is not a type of select")
 
 def list_users():
     Users.list()
@@ -61,7 +80,7 @@ def main():
     actions = {
         "bookings": bookings,
         "rooms": rooms,
-        "list-contacts": list_contacts,
+        "contacts": contacts,
         "list-users": list_users,
     }
     

@@ -21,7 +21,7 @@ class Model(ABC):
             with open(cls.json_path, "r") as file:
                 data = json.load(file)
                 for book in data:
-                    if int(id) == book.get('id'):
+                    if int(id) == book.get("id"):
                         print(f'View {id}')
                         print(book)
                         return book
@@ -39,12 +39,6 @@ class Model(ABC):
     @abstractmethod
     def update(self):
         pass
-
-class Rooms(Model):
-    json_path = 'data/rooms.json'
-    
-    def __init__(self, id):
-        self.id = id
 
 class Contact(Model):
     json_path = 'data/contact.json'

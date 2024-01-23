@@ -1,4 +1,5 @@
 from models.bookings import Bookings
+from models.rooms import Rooms
 from models.models import *
 import argparse
 
@@ -23,8 +24,26 @@ def bookings():
     else:
         print(f"{type} is not a type of select")
     
-def list_rooms():
-    Rooms.list()
+
+def rooms():
+    type = input("Insert the type of select (list, view, create, udpate, delete): ")
+    
+    actionRoom = {
+        "list": Rooms.list,
+        "view": Rooms.view,
+        "create": Rooms.create,
+        "update": Rooms.update, 
+        "delete": Rooms.delete, 
+    }
+    
+    if type in actionRoom:
+        if type=="list" or type =="create":
+            actionRoom[type]()
+        else: 
+            id = input("Insert the id of room: ")
+            actionRoom[type](id)
+    else:
+        print(f"{type} is not a type of select")
 
 def list_contacts():
     Contact.list()
@@ -33,7 +52,7 @@ def list_users():
     Users.list()
     
 def main():
-    parser = argparse.ArgumentParser(description="app reads bookings, rooms, contacts and users")
+    parser = argparse.ArgumentParser(description="app select bookings, rooms, contacts and users")
     parser.add_argument('action', help="Action to realise")
     
     
@@ -41,7 +60,7 @@ def main():
     
     actions = {
         "bookings": bookings,
-        "list-rooms": list_rooms,
+        "rooms": rooms,
         "list-contacts": list_contacts,
         "list-users": list_users,
     }

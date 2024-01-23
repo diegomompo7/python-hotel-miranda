@@ -40,15 +40,3 @@ class Model(ABC):
     def update(self):
         pass
 
-class Contact(Model):
-    json_path = 'data/contact.json'
-
-    def __init__(self, id):
-        self.id = id
-    
-class Users(Model):
-    json_path = 'data/users.json'
-    
-    def __init__(self, id):
-        self.id = id
-

@@ -12,11 +12,13 @@ class Model(ABC):
                 data = json.load(file)
                 print(f"Listening {cls.__name__}")
                 print(data)
+                return data
         else:
             print(f"Error: JSON path for {cls.__name__}")
 
     @classmethod
     def view(cls, id):
+        checkView = False
         if cls.json_path is not None:
             with open(cls.json_path, "r") as file:
                 data = json.load(file)
@@ -25,6 +27,11 @@ class Model(ABC):
                         print(f"View {id}")
                         print(book)
                         return book
+                
+                if checkView == False:
+                    print("id not found")
+                    return "id not found"
+
         else:
             print(f"Error: JSON path for {cls.__name__}")
 

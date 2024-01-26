@@ -1,17 +1,6 @@
 from models.models import *
 from datetime import date
 
-#'id': 1,
-#'photo': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-# 'fullName': 'Diego Mompo',
-# 'job': 'Manager',
-# 'email': 'diego@gmail.com',
-# 'phone': '+34 788128729',
-# 'startDate': '2023-02-03',
-# 'descriptionJob': 'Responsable de la gestión operativa del hotel. Toma decisiones estratégicas y coordina las actividades de los diferentes departamentos.',
-# 'status': 'ACTIVE',
-# 'password': 'diego23'}
-
 
 class Users(Model):
     json_path = "data/users.json"

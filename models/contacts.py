@@ -17,7 +17,17 @@ class Contacts(Model):
         date = input("Enter date when wrote the review (YYYY-MM-DD): ")
         subject = input("Enter the subject of review: ")
         message = input("Enter your message: ")
-        stars = int(input("Enter the stars (1-Lowest, 5-Highest): "))
+
+        while True:
+            try:
+                stars = int(input("Enter the stars (1-Lowest, 5-Highest): "))
+                if 1 <= stars <= 5:
+                    break
+                else:
+                    print("Please enter a number between 1 and 5.")
+            except ValueError:
+                print("Please enter a valid integer.")
+
         is_archived = False
 
         newContact = {
@@ -63,12 +73,22 @@ class Contacts(Model):
         message = input(
             f"Enter your message (default {contact_data.get('message')}): "
         ) or contact_data.get("message")
-        stars = int(
-            input(
-                f"Enter the stars (1-Lowest, 5-Highest) (default {contact_data.get('stars')}): "
-            )
-            or contact_data.get("stars")
-        )
+        while True:
+            try:
+                stars_input = input("Enter the stars (1-Lowest, 5-Highest): ")
+
+                if stars_input:
+                    stars = int(stars_input)
+                else:
+                    stars = contact_data.get("stars")
+
+                if stars is None or 1 <= stars <= 5:
+                    break
+                else:
+                    print("Please enter a number between 1 and 5.")
+
+            except ValueError:
+                print("Please enter a valid integer.")
         is_archived = input(
             f"Enter if yo want archived the review (default {contact_data.get('is_archived')}): "
         ) or contact_data.get("is_archived")

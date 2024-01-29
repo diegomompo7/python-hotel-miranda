@@ -10,18 +10,38 @@ class Rooms(Model):
 
     def create():
         amenities = []
+        photos = []
+        type = ["Single Bed", "Double Bed", "Double Superior", "Suite"]
+        isOffer = ["YES", "NO"]
         
         messagePhotos = "Insert a number of photos (from 3 to 5): "
-        photos = Model.validationBetween("photos", messagePhotos, None)
+
+        while True:
+            try:
+                numberPhotos = Model.validationPositive("photos", messagePhotos, None)
+                if 3 <= numberPhotos <= 5:
+                    for i in range(0, numberPhotos):
+                        photo = input(f"Insert the photo number {i+1}: ")
+                        photos.append(photo)
+                else:
+                    print("Please enter a number between 3 and 5.")
+                    return False
+            except (e):
+                print(e)
+
         
-        roomType = input("Insert a room type: ")
+        roomTypeMessage = f"Insert a room type {type}: "
+        roomType = Model.validationOption("roomType", roomTypeMessage, None, type)
+        
         roomNumber = input("Insert a room number: ")
         description = input("Insert a description: ")
         
         messagePriceNight = "Insert a price per night: "
         priceNight = Model.validationPositive("priceNight", messagePriceNight, None)
 
-        offer = input("Insert if there's offer or not (YES OR NO): ")
+        offerMessage = f"Insert if there's offer or not {isOffer}: "
+        offer = Model.validationOption("offer", offerMessage, None, isOffer)
+        
         if offer == "YES":
                 messageDiscount = "Insert a discount: "
                 discountValue = Model.validationPositive("discount", messageDiscount, None)
@@ -44,6 +64,9 @@ class Rooms(Model):
 
     def update(id):
         room_data = Rooms.view(str(id))
+        type = ["Single Bed", "Double Bed", "Double Superior", "Suite"]
+        isOffer = ["YES", "NO"]
+        roomStatus = ["Available", "Booked"]
         
         photos = room_data.get("photos")
         amenities = room_data.get("amenities")
@@ -62,9 +85,9 @@ class Rooms(Model):
             print("Please enter a number between 3 and 5.")
             return Model.validationPositive("photos", messagePhotos, room_data)
 
-        roomType = input(
-            f"Insert a room type (default {room_data.get('roomType')}): "
-        )
+        roomTypeMessage = f"Insert a room type {type} (default {room_data.get('roomType')}): "
+        roomType = Model.validationOption("roomType", roomTypeMessage, room_data, type)
+        
         roomNumber = input(
             f"Insert a room number (default {room_data.get('roomNumber')}): "
         ) 
@@ -74,11 +97,10 @@ class Rooms(Model):
         messagePriceNight = f"Insert a price per night (default {room_data.get('priceNight')}): "
         priceNight = Model.validationPositive("priceNight", messagePriceNight, room_data)
 
-        offer = input(
-            f"Insert if there's offer or not (YES OR NO) (default {room_data.get('offer')}): "
-        )
-        checkOffer = Model.validationEmpty("offer", offer, room_data)
-        if checkOffer == "YES":
+        offerMessage = f"Insert if there's offer or not {isOffer} (default {room_data.get('offer')}): "
+        offer = Model.validationOption("offer", offerMessage, room_data, isOffer)
+        
+        if offer == "YES":
                 messageDiscount = f"Insert a discount (default {room_data.get('discount')}): "
                 discount = Model.validationPositive("discount", messageDiscount, room_data)
         else:
@@ -106,9 +128,9 @@ class Rooms(Model):
             if numberAmenities < len(amenities):
                 amenities = amenities[0:numberAmenities]   
 
-        status = input(
-            f"Inter a status (Available or Booked) (default {room_data.get('status')}): "
-        )
+        statusMessage = f"Insert a status {roomStatus} (default {room_data.get('status')}): "
+        status = Model.validationOption("status", statusMessage, room_data, roomStatus)
+        
 
         Model.room(photos, roomType, roomNumber, description, offer, priceNight, discount, cancellation, amenities, status, room_data)
 

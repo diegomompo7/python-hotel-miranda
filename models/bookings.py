@@ -22,6 +22,7 @@ class Bookings(Model):
 
     def update(id):
         booking_data = Bookings.view(str(id))
+        statusBooking = ["Check In", "Check Out", "In Progress"]
 
         name = input(f"What's your name (default {booking_data.get('name')}): ")
         check_in = input(
@@ -39,8 +40,8 @@ class Bookings(Model):
         specialRequest = input(
             f"Enter a special request (OPTIONAL) (default {booking_data.get('specialRequest')}): "
         )
-        status = input(
-                f"Enter a status (Check In, Check Out, In Progress) (default {booking_data.get('status')}): ")
+        statusMessage = f"Enter a status {statusBooking} (default {booking_data.get('status')}): "
+        status = Model.validationOption("status", statusMessage, booking_data, statusBooking)
             
         print(
             Model.book(

@@ -40,9 +40,13 @@ class Bookings(Model):
         specialRequest = input(
             f"Enter a special request (OPTIONAL) (default {booking_data.get('specialRequest')}): "
         )
-        statusMessage = f"Enter a status {statusBooking} (default {booking_data.get('status')}): "
-        status = Model.validationOption("status", statusMessage, booking_data, statusBooking)
-            
+        statusMessage = (
+            f"Enter a status {statusBooking} (default {booking_data.get('status')}): "
+        )
+        status = Model.validationOption(
+            "status", statusMessage, booking_data, statusBooking
+        )
+
         print(
             Model.book(
                 name,

@@ -46,12 +46,36 @@ class Model(ABC):
         pass
 
     def validationEmpty(input, value, data):
-        print(input)
         if value == "" and data is not None:
-            print("True")
+            print(data.get(input))
             return data.get(input)
 
         return value
+            
+    def validationPositive(inputColumn, inputMessage, data):
+            try:
+                
+                if data is not None:
+                    numberInput = input(inputMessage)
+                else:
+                    numberInput = int(input(inputMessage))
+                
+                checkNumber = Model.validationEmpty(inputColumn, numberInput, data)
+        
+                if type(checkNumber) == list:
+                    return len(checkNumber)
+            
+                numberInput = int(checkNumber)
+                
+                if numberInput > 0:
+                    return numberInput
+                else:
+                    print("Please enter a positive integer.")
+                    return Model.validationPositive(inputColumn, inputMessage, data)
+            except ValueError:
+                print("Please enter a valid integer.")
+                return Model.validationPositive(inputColumn, inputMessage, data)
+        
 
     def book(
         nameValue,
@@ -81,3 +105,31 @@ class Model(ABC):
         }
 
         return booking
+
+    def room(
+        photoValue,
+        roomTypeValue,
+        roomNumberValue,
+        descriptionValue,
+        offerValue,
+        priceNightValue,
+        discountValue,
+        cancellationValue,
+        amenitiesValue,
+        statusValue,
+        room_data,
+    ):
+        room = {
+            "photo": photoValue,
+            "roomType":  Model.validationEmpty("roomType", roomTypeValue, room_data),
+            "roomNumber":  Model.validationEmpty("roomNumber", roomNumberValue, room_data),
+            "description": Model.validationEmpty("description", descriptionValue, room_data),
+            "offer": offerValue,
+            "priceNight":  priceNightValue,
+            "discount":  Model.validationEmpty("discount", discountValue, room_data),
+            "cancellation":  Model.validationEmpty("cancellation", cancellationValue, room_data),
+            "amenities":  amenitiesValue,
+            "status":  Model.validationEmpty("status", statusValue, room_data),
+        }
+        print(room)
+        return room

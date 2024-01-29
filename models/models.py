@@ -1,35 +1,24 @@
 from abc import ABC, abstractmethod
 import json
 from datetime import date
+from sql import executeQuery
 
 
 class Model(ABC):
-    json_path = None
+    table = None
 
     @classmethod
     def list(cls):
-        if cls.json_path is not None:
-            with open(cls.json_path, "r") as file:
-                data = json.load(file)
-            print(f"Listening {cls.__name__}")
+        result = executeQuery("SELECT * FROM %s ;", cls.table)
+        for data in result:
             print(data)
-            return data
-
-        print(f"Error: JSON path for {cls.__name__}")
 
     @classmethod
     def view(cls, id):
-        if cls.json_path is not None:
-            with open(cls.json_path, "r") as file:
-                data = json.load(file)
-            for book in data:
-                if int(id) == book.get("id"):
-                    print(f"View {id}")
-                    print(book)
-                    return book
-
-                print("id not found")
-                return "id not found"
+        result = executeQuery("SELECT * FROM %s WHERE id=%s;", (cls.table, id))
+        for data in result:
+            print(data)
+            return data
 
         print(f"Error: JSON path for {cls.__name__}")
 
@@ -37,9 +26,11 @@ class Model(ABC):
     def delete(cls, id):
         pass
 
-    @abstractmethod
-    def create(self):
-        pass
+    @classmethod
+    def create(cls, table, data):
+        print(tuple(data.values()))
+        result = executeQuery("INSERT INTO %s (%s) VALUES %s;", (table, ",".join(list(data.keys())), tuple(data.values())))
+        print(result)
 
     @abstractmethod
     def update(self):
@@ -101,6 +92,7 @@ class Model(ABC):
         hour_inValue,
         check_outValue,
         hour_outValue,
+        roomIdValue,
         specialRequestValue,
         statusValue,
         booking_data,
@@ -116,6 +108,7 @@ class Model(ABC):
                 "check_out", check_outValue, booking_data
             ),
             "hour_out": Model.validationEmpty("hour_out", hour_outValue, booking_data),
+            "room_id": roomIdValue,
             "specialRequest": Model.validationEmpty(
                 "specialRequest", specialRequestValue, booking_data
             ),

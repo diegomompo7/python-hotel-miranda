@@ -3,7 +3,7 @@ from datetime import date
 
 
 class Contacts(Model):
-    json_path = "data/contact.json"
+    table = "contacts"
 
     def __init__(self, id):
         self.id = id

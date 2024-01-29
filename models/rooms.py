@@ -3,7 +3,7 @@ from datetime import date
 
 
 class Rooms(Model):
-    json_path = "data/rooms.json"
+    table = "rooms"
 
     def __init__(self, id):
         self.id = id

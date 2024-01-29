@@ -1,7 +1,7 @@
 from models.models import *
 
 class Users(Model):
-    json_path = "data/users.json"
+    table = "users"
 
     def __init__(self, id):
         self.id = id

@@ -24,7 +24,7 @@ class Rooms(Model):
             print("Please enter a number between 3 and 5.")
             numberPhotos = Model.validationPositive(1, messagePhotos, None)
 
-        for i in range(numberPhotos):
+        for i in range(0, numberPhotos):
             photo = input(f"Insert the photo number {i+1}: ")
             photos.append(f"{photo}")
             
@@ -76,72 +76,71 @@ class Rooms(Model):
         
 
     def update(id):
-        room_data = Rooms.view(str(id))
-        amenities_data = executeQuery("SELECT GROUP_CONCAT(amenity), room_id FROM amenities RIGHT JOIN rooms ON room_id = rooms.id WHERE rooms.id = %s;", id, "GET")
+        room_data = list(Rooms.view(str(id)))
         
         type = ["Single Bed", "Double Bed", "Double Superior", "Suite"]
         isOffer = ["YES", "NO"]
         roomStatus = ["Available", "Booked"]
+        
+        room_data[1] = json.loads(room_data[1])
         photos = room_data[1]
-
+        
         messagePhotos = (
             f"Insert a number of photos (from 3 to 5) (default {len(photos)}): "
         )
-        numberPhotos = Model.validationPositive("photos", messagePhotos, room_data)
+        numberPhotos = Model.validationPositive(1, messagePhotos, room_data)
 
         while numberPhotos < 3 or 5 < numberPhotos:
             print("Please enter a number between 3 and 5.")
-            numberPhotos = Model.validationPositive("photos", messagePhotos, None)
+            numberPhotos = Model.validationPositive(1, messagePhotos, room_data)
 
-        for i in range(numberPhotos):
-            photo = input(f"Insert the photo number {i+1}: ")
-            photos.append(photo)
+        for i in range(0, numberPhotos):
+            photo = input(f"Insert the photo number {i+1} default ({photos[i]}): ") or photos[i]
+            photos.append(f"{photo}")
 
         if numberPhotos < len(photos):
             photos = photos[0:numberPhotos]
 
         roomTypeMessage = (
-            f"Insert a room type {type} (default {room_data.get('roomType')}): "
+            f"Insert a room type {type} (default {room_data[2]}): "
         )
-        roomType = Model.validationOption("roomType", roomTypeMessage, room_data, type)
+        roomType = Model.validationOption(2, roomTypeMessage, room_data, type)
 
         roomNumber = input(
-            f"Insert a room number (default {room_data.get('roomNumber')}): "
+            f"Insert a room number (default {room_data[3]}): "
         )
         description = input(
-            f"Insert a description (default {room_data.get('description')}): "
+            f"Insert a description (default {room_data[4]}): "
         )
         messagePriceNight = (
-            f"Insert a price per night (default {room_data.get('priceNight')}): "
+            f"Insert a price per night (default {room_data[6]}): "
         )
         priceNight = Model.validationPositive(
-            "priceNight", messagePriceNight, room_data
+            6, messagePriceNight, room_data
         )
 
-        offerMessage = f"Insert if there's offer or not {isOffer} (default {room_data.get('offer')}): "
-        offer = Model.validationOption("offer", offerMessage, room_data, isOffer)
+        offerMessage = f"Insert if there's offer or not {isOffer} (default {room_data[5]}): "
+        offer = Model.validationOption(5, offerMessage, room_data, isOffer)
 
         if offer == "YES":
             messageDiscount = (
-                f"Insert a discount (default {room_data.get('discount')}): "
+                f"Insert a discount (default {room_data[7]}): "
             )
-            discount = Model.validationPositive("discount", messageDiscount, room_data)
+            discount = Model.validationPositive(7, messageDiscount, room_data)
         else:
             discount = 0
 
         cancellation = input(
-            f"Insert a cancellation (default {room_data.get('cancellation')}): "
+            f"Insert a cancellation (default {room_data[8]}): "
         )
-
-        amenities = input(f"Insert amenities: ")
 
         statusMessage = (
-            f"Insert a status {roomStatus} (default {room_data.get('status')}): "
+            f"Insert a status {roomStatus} (default {room_data[9]}): "
         )
-        status = Model.validationOption("status", statusMessage, room_data, roomStatus)
+        status = Model.validationOption(9, statusMessage, room_data, roomStatus)
 
-        Model.room(
-            photos,
+        updateRoom = Model.room(
+            json.dumps(photos),
             roomType,
             roomNumber,
             description,
@@ -152,3 +151,6 @@ class Rooms(Model):
             status,
             room_data,
         )
+        
+        Model.update(Rooms.table, updateRoom, id)
+        

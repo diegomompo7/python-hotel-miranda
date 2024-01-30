@@ -14,8 +14,10 @@ mydb = mysql.connector.connect(
 cursorObject = mydb.cursor()
 
 def executeQuery(query, params, method):
-    print(params)
+    print("5", params)
     cursorObject.execute(query % params)
+    
+    print(cursorObject.description)
     
     if method == "GET":
         result = cursorObject.fetchall()

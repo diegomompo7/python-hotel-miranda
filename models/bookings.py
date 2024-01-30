@@ -35,40 +35,39 @@ class Bookings(Model):
 
     def update(id):
         booking_data = Bookings.view(str(id))
+        print(type(booking_data))
         statusBooking = ["Check In", "Check Out", "In Progress"]
 
-        name = input(f"What's your name (default {booking_data.get('name')}): ")
+        name = input(f"What's your name (default {booking_data[1]}): ")
         check_in = input(
-            f"Date to entry (YYYY-MM-DD) (default {booking_data.get('check_in')}): "
+            f"Date to entry (YYYY-MM-DD) (default {booking_data[3]}): "
         )
         hour_in = input(
-            f"Date to entry (HH:MM)  (default {booking_data.get('hour_in')}): "
+            f"Date to entry (HH:MM)  (default {booking_data[4]}): "
         )
         check_out = input(
-            f"Date to entry (YYYY-MM-DD)  (default {booking_data.get('check_out')}): "
+            f"Date to entry (YYYY-MM-DD)  (default {booking_data[5]}): "
         )
         hour_out = input(
-            f"Date to entry (HH:MM) (default {booking_data.get('hour_out')}): "
+            f"Date to entry (HH:MM) (default {booking_data[6]}): "
         )
         
-        roomIdMessage = "Enter a id of room: "
-        checkId = Model.validationPositive("room_id", roomIdMessage, None)
-        booking_data = Rooms.view(checkId)
+        roomIdMessage = f"Enter a id of room (default {booking_data[7]}): "
+        checkId = Model.validationPositive(7, roomIdMessage, booking_data)
+        room_data = Rooms.view(checkId)
         
-        specialRequest = input("Enter a special request (OPTIONAL): ")
-        
-        if type(booking_data) != list:
+        if type(room_data) != list:
             roomId = checkId
         
         
         specialRequest = input(
-            f"Enter a special request (OPTIONAL) (default {booking_data.get('specialRequest')}): "
+            f"Enter a special request (OPTIONAL) (default {booking_data[8]}): "
         )
         statusMessage = (
-            f"Enter a status {statusBooking} (default {booking_data.get('status')}): "
+            f"Enter a status {statusBooking} (default {booking_data[9]}): "
         )
         status = Model.validationOption(
-            "status", statusMessage, booking_data, statusBooking
+            9, statusMessage, booking_data, statusBooking
         )
 
         updateBook =  Model.book(
@@ -82,3 +81,6 @@ class Bookings(Model):
             status,
             booking_data,
         )
+        
+
+        Model.update(Bookings.table, updateBook, id)

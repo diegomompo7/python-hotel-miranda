@@ -9,39 +9,50 @@ class Model(ABC):
 
     @classmethod
     def list(cls):
-        result = executeQuery("SELECT * FROM %s ;", cls.table)
+        result = executeQuery("SELECT * FROM %s ;", cls.table, "GET")
         for data in result:
             print(data)
+        
 
     @classmethod
     def view(cls, id):
-        result = executeQuery("SELECT * FROM %s WHERE id=%s;", (cls.table, id))
+        result = executeQuery("SELECT * FROM %s WHERE id=%s;", (cls.table, id), "GET")
+            
         for data in result:
             print(data)
             return data
-
-        print(f"Error: JSON path for {cls.__name__}")
+        print(f"id not found")
 
     @classmethod
     def delete(cls, id):
-        pass
+        result = executeQuery("DELETE FROM bookings WHERE id = %s", id, "DELETE")
+        if result == 0:
+            print("id not found")
 
     @classmethod
     def create(cls, table, data):
-        print(tuple(data.values()))
-        result = executeQuery("INSERT INTO %s (%s) VALUES %s;", (table, ",".join(list(data.keys())), tuple(data.values())))
-        print(result)
-
-    @abstractmethod
-    def update(self):
-        pass
+        lastId = executeQuery("INSERT INTO %s (%s) VALUES %s;", (table, ",".join(list(data.keys())), tuple(data.values())), "POST")
+        print(type(lastId))
+        return lastId
+    
+    @classmethod
+    def update(self, table, data, id):
+        setColumns = []
+        print(data.items())
+        for key, value in data.items():
+           setColumns.append(f"{key} = '{value}'")
+           
+        print(",".join(setColumns))
+        
+        executeQuery("UPDATE %s SET %s WHERE id=%s", (table, ",".join(setColumns), id), "PATCH")
+        
 
     def validationEmpty(input, value, data):
         if value is None:
             value = ""
             
         if value == "" and data is not None:
-            return data.get(input)
+            return data[input]
 
         return value
 
@@ -98,19 +109,19 @@ class Model(ABC):
         booking_data,
     ):
         booking = {
-            "name": Model.validationEmpty("name", nameValue, booking_data),
+            "name": Model.validationEmpty(1, nameValue, booking_data),
             "orderDate": date.today().isoformat()
             if booking_data is None
-            else booking_data.get("orderDate"),
-            "check_in": Model.validationEmpty("check_in", check_inValue, booking_data),
-            "hour_in": Model.validationEmpty("hour_in", hour_inValue, booking_data),
+            else booking_data[2],
+            "check_in": Model.validationEmpty(3, check_inValue, booking_data),
+            "hour_in": Model.validationEmpty(4, hour_inValue, booking_data),
             "check_out": Model.validationEmpty(
-                "check_out", check_outValue, booking_data
+                5, check_outValue, booking_data
             ),
-            "hour_out": Model.validationEmpty("hour_out", hour_outValue, booking_data),
+            "hour_out": Model.validationEmpty(6, hour_outValue, booking_data),
             "room_id": roomIdValue,
             "specialRequest": Model.validationEmpty(
-                "specialRequest", specialRequestValue, booking_data
+                8, specialRequestValue, booking_data
             ),
             "status": statusValue,
         }
@@ -126,26 +137,24 @@ class Model(ABC):
         priceNightValue,
         discountValue,
         cancellationValue,
-        amenitiesValue,
         statusValue,
         room_data,
     ):
         room = {
-            "photo": photoValue,
+            "photos": photoValue,
             "roomType": roomTypeValue,
             "roomNumber": Model.validationEmpty(
-                "roomNumber", roomNumberValue, room_data
+                3, roomNumberValue, room_data
             ),
             "description": Model.validationEmpty(
-                "description", descriptionValue, room_data
+                4, descriptionValue, room_data
             ),
             "offer": offerValue,
             "priceNight": priceNightValue,
             "discount": Model.validationEmpty("discount", discountValue, room_data),
             "cancellation": Model.validationEmpty(
-                "cancellation", cancellationValue, room_data
+                8, cancellationValue, room_data
             ),
-            "amenities": amenitiesValue,
             "status": statusValue,
         }
         print(room)

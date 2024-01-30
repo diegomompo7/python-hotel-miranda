@@ -13,9 +13,14 @@ mydb = mysql.connector.connect(
 
 cursorObject = mydb.cursor()
 
-def executeQuery(query, params):
+def executeQuery(query, params, method):
+    print(params)
     cursorObject.execute(query % params)
     
-    result = cursorObject.fetchall()
-
-    return result
+    if method == "GET":
+        result = cursorObject.fetchall()
+        return result
+    
+    mydb.commit()
+    print(cursorObject.rowcount, "record(s) affected")
+    return cursorObject.lastrowid

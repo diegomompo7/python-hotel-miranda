@@ -1,5 +1,5 @@
 from models.models import *
-from datetime import date
+from sql import executeQuery
 
 
 class Rooms(Model):
@@ -9,55 +9,55 @@ class Rooms(Model):
         self.id = id
 
     def create():
-        amenities = []
+        
+        
+        
         photos = []
         type = ["Single Bed", "Double Bed", "Double Superior", "Suite"]
         isOffer = ["YES", "NO"]
 
         messagePhotos = "Insert a number of photos (from 3 to 5): "
+        
+        numberPhotos = Model.validationPositive(1, messagePhotos, None)
 
         while numberPhotos < 3 or 5 < numberPhotos:
             print("Please enter a number between 3 and 5.")
-            numberPhotos = Model.validationPositive("photos", messagePhotos, None)
+            numberPhotos = Model.validationPositive(1, messagePhotos, None)
 
         for i in range(numberPhotos):
             photo = input(f"Insert the photo number {i+1}: ")
-            photos.append(photo)
+            photos.append(f"{photo}")
+            
+        print(photos)
 
         roomTypeMessage = f"Insert a room type {type}: "
-        roomType = Model.validationOption("roomType", roomTypeMessage, None, type)
+        roomType = Model.validationOption(2, roomTypeMessage, None, type)
 
         roomNumber = input("Insert a room number: ")
         description = input("Insert a description: ")
 
         messagePriceNight = "Insert a price per night: "
-        priceNight = Model.validationPositive("priceNight", messagePriceNight, None)
+        priceNight = Model.validationPositive(6, messagePriceNight, None)
 
         offerMessage = f"Insert if there's offer or not {isOffer}: "
-        offer = Model.validationOption("offer", offerMessage, None, isOffer)
+        offer = Model.validationOption(5, offerMessage, None, isOffer)
 
         if offer == "YES":
             messageDiscount = "Insert a discount: "
-            discountValue = Model.validationPositive("discount", messageDiscount, None)
+            discountValue = Model.validationPositive(7, messageDiscount, None)
         else:
             discountValue = 0
 
         cancellation = input("Insert a cancellation: ")
-
-        messageNumberAmenities = "Insert a number of amenities: "
-        numberAmenities = Model.validationPositive(
-            "amenities", messageNumberAmenities, None
-        )
-
-        if numberAmenities > 0:
-            for i in range(0, numberAmenities):
-                amenity = input(f"Insert amenity number {i+1}: ")
-                amenities.append(amenity)
-
+        
+        amenitiesInput = input(f"Insert amenities: ")
+        checkAmenities = Model.validationEmpty(1, amenitiesInput, None)
+        amenities = checkAmenities.split(",")
+        
         status = "Available"
 
-        Model.room(
-            photos,
+        newRoom = Model.room(
+            f'{json.dumps(photos)}',
             roomType,
             roomNumber,
             description,
@@ -65,19 +65,24 @@ class Rooms(Model):
             priceNight,
             discountValue,
             cancellation,
-            amenities,
             status,
             None,
         )
+        
+        idRoom = Model.create(Rooms.table, newRoom)
+        
+        for amenity in amenities:
+            Model.create("amenities", {"amenity": amenity, "room_id": idRoom})
+        
 
     def update(id):
         room_data = Rooms.view(str(id))
+        amenities_data = executeQuery("SELECT GROUP_CONCAT(amenity), room_id FROM amenities RIGHT JOIN rooms ON room_id = rooms.id WHERE rooms.id = %s;", id, "GET")
+        
         type = ["Single Bed", "Double Bed", "Double Superior", "Suite"]
         isOffer = ["YES", "NO"]
         roomStatus = ["Available", "Booked"]
-
-        photos = room_data.get("photos")
-        amenities = room_data.get("amenities")
+        photos = room_data[1]
 
         messagePhotos = (
             f"Insert a number of photos (from 3 to 5) (default {len(photos)}): "
@@ -128,24 +133,7 @@ class Rooms(Model):
             f"Insert a cancellation (default {room_data.get('cancellation')}): "
         )
 
-        messageNumberAmenities = (
-            f"Insert a number of amenities (default {len(amenities)}): "
-        )
-
-        numberAmenities = Model.validationPositive(
-            "amenities", messageNumberAmenities, room_data
-        )
-
-        if numberAmenities > 0:
-            for i in range(0, numberAmenities):
-                amenity = (
-                    input(f"Insert amenity number {i+1} (default {amenities[i]}): ")
-                    or amenities[i]
-                )
-                amenities[i] = amenity
-
-            if numberAmenities < len(amenities):
-                amenities = amenities[0:numberAmenities]
+        amenities = input(f"Insert amenities: ")
 
         statusMessage = (
             f"Insert a status {roomStatus} (default {room_data.get('status')}): "
@@ -161,7 +149,6 @@ class Rooms(Model):
             priceNight,
             discount,
             cancellation,
-            amenities,
             status,
             room_data,
         )

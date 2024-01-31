@@ -38,11 +38,9 @@ class Model(ABC):
     @classmethod
     def update(self, table, data, id):
         setColumns = []
-        print(data.items())
         for key, value in data.items():
            setColumns.append(f"{key} = '{value}'")
            
-        print(",".join(setColumns))
         
         executeQuery("UPDATE %s SET %s WHERE id=%s", (table, ",".join(setColumns), id), "PATCH")
         

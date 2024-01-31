@@ -11,13 +11,11 @@ mydb = mysql.connector.connect(
     database=os.getenv('API_DATABASE')
 )
 
-cursorObject = mydb.cursor()
+cursorObject = mydb.cursor(dictionary=True)
 
 def executeQuery(query, params, method):
-    print("5", params)
     cursorObject.execute(query % params)
     
-    print(cursorObject.description)
     
     if method == "GET":
         result = cursorObject.fetchall()

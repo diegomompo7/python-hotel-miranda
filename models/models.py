@@ -25,7 +25,7 @@ class Model(ABC):
 
     @classmethod
     def delete(cls, id):
-        result = executeQuery("DELETE FROM bookings WHERE id = %s", id, "DELETE")
+        result = executeQuery("DELETE FROM %s WHERE id = %s", (cls.table, id), "DELETE")
         if result == 0:
             print("id not found")
 
@@ -40,7 +40,6 @@ class Model(ABC):
         setColumns = []
         for key, value in data.items():
            setColumns.append(f"{key} = '{value}'")
-           
         
         executeQuery("UPDATE %s SET %s WHERE id=%s", (table, ",".join(setColumns), id), "PATCH")
         
@@ -56,21 +55,23 @@ class Model(ABC):
 
     def validationOption(inputColumn, inputMessage, data, options):
         try:
-            optionInput = input(inputMessage)
+
+            if inputColumn == 'room_id':
+                optionInput = Model.validationPositive('room_id', inputMessage, data)
+            else:
+                optionInput = input(inputMessage)
 
             checkOption = Model.validationEmpty(inputColumn, optionInput, data)
-            
-            print(checkOption)
 
             if options.count(checkOption) != 0:
                 return checkOption
 
-            print(f"Please enter a valid ption between this {options}.")
+            print(f"Please enter a valid option between this {options}.")
             return Model.validationOption(inputColumn, inputMessage, data, options)
 
         except ValueError:
-            print(f"Please enter a valid ption between this {options}.")
-            return Model.validationOption(inputColumn, inputMessage, data, options)
+                print(f"Please enter a valid option between this {options}.")
+                return Model.validationOption(inputColumn, inputMessage, data, options)
 
     def validationPositive(inputColumn, inputMessage, data):
         try:
@@ -92,39 +93,8 @@ class Model(ABC):
                 print("Please enter a positive integer.")
                 return Model.validationPositive(inputColumn, inputMessage, data)
         except ValueError:
-            print("Please enter a valid integer.")
-            return Model.validationPositive(inputColumn, inputMessage, data)
-
-    def book(
-        nameValue,
-        check_inValue,
-        hour_inValue,
-        check_outValue,
-        hour_outValue,
-        roomIdValue,
-        specialRequestValue,
-        statusValue,
-        booking_data,
-    ):
-        booking = {
-            "name": Model.validationEmpty(1, nameValue, booking_data),
-            "orderDate": date.today().isoformat()
-            if booking_data is None
-            else booking_data[2],
-            "check_in": Model.validationEmpty(3, check_inValue, booking_data),
-            "hour_in": Model.validationEmpty(4, hour_inValue, booking_data),
-            "check_out": Model.validationEmpty(
-                5, check_outValue, booking_data
-            ),
-            "hour_out": Model.validationEmpty(6, hour_outValue, booking_data),
-            "room_id": roomIdValue,
-            "specialRequest": Model.validationEmpty(
-                8, specialRequestValue, booking_data
-            ),
-            "status": statusValue,
-        }
-
-        return booking
+                print("Please enter a valid integer.")
+                return Model.validationPositive(inputColumn, inputMessage, data)
 
     def room(
         photoValue,

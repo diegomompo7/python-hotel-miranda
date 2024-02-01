@@ -17,8 +17,6 @@ class Bookings(Model):
         fields = executeQuery("SHOW FIELDS FROM %s", Bookings.table, "GET")
         for i in range(1, len(fields)):
             newBook[fields[i]["Field"]] = ""
-            
-        print(newBook)
         
         name = input("What's your name: ")
         newBook['name'] = name

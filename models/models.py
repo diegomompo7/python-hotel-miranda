@@ -95,70 +95,7 @@ class Model(ABC):
         except ValueError:
                 print("Please enter a valid integer.")
                 return Model.validationPositive(inputColumn, inputMessage, data)
-
-    def room(
-        photoValue,
-        roomTypeValue,
-        roomNumberValue,
-        descriptionValue,
-        offerValue,
-        priceNightValue,
-        discountValue,
-        cancellationValue,
-        statusValue,
-        room_data,
-    ):
-        room = {
-            "photos": photoValue,
-            "roomType": roomTypeValue,
-            "roomNumber": Model.validationEmpty(
-                3, roomNumberValue, room_data
-            ),
-            "description": Model.validationEmpty(
-                4, descriptionValue, room_data
-            ),
-            "offer": offerValue,
-            "priceNight": priceNightValue,
-            "discount": Model.validationEmpty("discount", discountValue, room_data),
-            "cancellation": Model.validationEmpty(
-                8, cancellationValue, room_data
-            ),
-            "status": statusValue,
-        }
-        print(room)
-        return room
-
-    def contact(
-        userImgValue,
-        nameValue,
-        surnameValue,
-        emailValue,
-        phoneValue,
-        dateValue,
-        subjectValue,
-        messageValue,
-        starsValue,
-        isArchivedValue,
-        contact_data,
-    ):
-        contact = {
-            "userImg": Model.validationEmpty("userImg", userImgValue, contact_data),
-            "name": Model.validationEmpty("name", nameValue, contact_data),
-            "surname": Model.validationEmpty("surname", surnameValue, contact_data),
-            "email": Model.validationEmpty("email", emailValue, contact_data),
-            "phone": Model.validationEmpty("phone", phoneValue, contact_data),
-            "date": Model.validationEmpty("date", dateValue, contact_data),
-            "subject": Model.validationEmpty("subject", subjectValue, contact_data),
-            "message": Model.validationEmpty("message", messageValue, contact_data),
-            "stars": starsValue,
-            "is_archived": Model.validationEmpty(
-                "is_archived", isArchivedValue, contact_data
-            ),
-        }
-
-        print(contact)
-        return contact
-
+            
     def user(
         photoValue,
         fullName,

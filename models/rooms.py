@@ -70,7 +70,7 @@ class Rooms(Model):
         newRoom['cancellation'] = cancellation
         
         amenitiesInput = input(f"Insert amenities: ")
-        amenities = checkAmenities.split(",")
+        amenities = amenitiesInput.split(",")
         
         
         newRoom['status'] = "Available"
@@ -120,11 +120,11 @@ class Rooms(Model):
         updateRoom['roomType'] = roomType
 
         roomNumber = input(f"Insert a room number (default {room_data['roomNumber']}): ")
-        checkRoomNumber = Model.validationEmpty('roomNumber', roomNumber, room_data)
+        checkRoomNumber = Model.validationExists('roomNumber', roomNumber, room_data)
         updateRoom['roomNumber'] = checkRoomNumber     
         
         description = input(f"Insert a description (default {room_data['description']}): ")
-        checkDescription = Model.validationEmpty('description', description, room_data)
+        checkDescription = Model.validationExists('description', description, room_data)
         updateRoom['description'] = checkDescription
            
         messagePriceNight = (f"Insert a price per night (default {room_data['priceNight']}): ")
@@ -144,7 +144,7 @@ class Rooms(Model):
         updateRoom['discount'] = discount
 
         cancellation = input(f"Insert a cancellation (default {room_data['cancellation']}): ")
-        checkRoomNumber = Model.validationEmpty('cancellation', cancellation, room_data)
+        checkRoomNumber = Model.validationExists('cancellation', cancellation, room_data)
         updateRoom['cancellation'] = checkRoomNumber  
         
         amenitiesInput = input(f"Insert amenities (default {amenities_data}): ")

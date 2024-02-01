@@ -44,7 +44,7 @@ class Model(ABC):
         executeQuery("UPDATE %s SET %s WHERE id=%s", (table, ",".join(setColumns), id), "PATCH")
         
 
-    def validationEmpty(input, value, data):
+    def validationExists(input, value, data):
         if value is None:
             value = ""
             
@@ -61,7 +61,7 @@ class Model(ABC):
             else:
                 optionInput = input(inputMessage)
 
-            checkOption = Model.validationEmpty(inputColumn, optionInput, data)
+            checkOption = Model.validationExists(inputColumn, optionInput, data)
 
             if options.count(checkOption) != 0:
                 return checkOption
@@ -80,7 +80,7 @@ class Model(ABC):
             else:
                 numberInput = int(input(inputMessage))
 
-            checkNumber = Model.validationEmpty(inputColumn, numberInput, data)
+            checkNumber = Model.validationExists(inputColumn, numberInput, data)
 
             if type(checkNumber) == list:
                 return len(checkNumber)
@@ -96,29 +96,3 @@ class Model(ABC):
                 print("Please enter a valid integer.")
                 return Model.validationPositive(inputColumn, inputMessage, data)
             
-    def user(
-        photoValue,
-        fullName,
-        jobValue,
-        emailValue,
-        phoneValue,
-        startDateValue,
-        descriptionJobValue,
-        statusValue,
-        passwordValue,
-        user_data,
-    ):
-        user = {
-            "photo": Model.validationEmpty("photo", photoValue, user_data),
-            "fullName": Model.validationEmpty("fullName", fullName, user_data),
-            "job": jobValue,
-            "email": Model.validationEmpty("email", emailValue, user_data),
-            "phone": Model.validationEmpty("phone", phoneValue, user_data),
-            "startDate": Model.validationEmpty("startDate", startDateValue, user_data),
-            "descriptionJob": Model.validationEmpty("descriptionJob", descriptionJobValue, user_data),
-            "status": statusValue,
-            "password": Model.validationEmpty("password", passwordValue, user_data),
-        }
-
-        print(user)
-        return user

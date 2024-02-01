@@ -1,8 +1,7 @@
-from models.bookings import Bookings
-from models.rooms import Rooms
-from models.contacts import Contacts
-from models.users import Users
-from models.models import *
+from src.models.bookings import Bookings
+from src.models.rooms import Rooms
+from src.models.contacts import Contacts
+from src.models.users import Users
 import argparse
 
 def main():

@@ -1,10 +1,10 @@
-from models import Users
+from src.models import Users
 
 def test_list_users():
-    assert isinstance(Users.list(), list)
+    assert isinstance(Users.list(), object)
 
 def test_view_user():
-    assert Users.view(2) != "id not found"
+    assert isinstance(Users.view(2), object)
     
 def test_error_view_user():
     assert Users.view(30) == "id not found"

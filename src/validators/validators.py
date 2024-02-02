@@ -1,11 +1,15 @@
-from datetime import datetime
+from datetime import datetime, date
 
-def validationDate(inputColumn, inputMessage, data):
+def validationDate(inputColumn, inputMessage, inputValue, data):
     try:
-        dateInput = input(inputMessage)
-
-        checkDate = validationExists(inputColumn, dateInput, data)
+        checkDate = validationExists(inputColumn, inputValue, data)
         
+        print(type(checkDate).__name__)
+        
+        if type(checkDate).__name__ == 'date':
+            print("True")
+            checkDate = checkDate.isoformat()
+            
         formatDate = datetime.strptime(checkDate, '%Y-%m-%d').strftime('%Y-%m-%d')
         
         if inputColumn == 'check_out':
@@ -15,13 +19,36 @@ def validationDate(inputColumn, inputMessage, data):
         
     except ValueError:
         print("Insert a valid format Date")
-        return validationDate(inputColumn, inputMessage, data)
+        return validationDate(inputColumn, inputMessage, input(inputMessage), data)
+    
+def validationTime(inputColumn, inputMessage, inputValue, data):
+    try:
+        checkTime = validationExists(inputColumn, inputValue, data)
+        
+        print(type(checkTime).__name__)
+        
+        if type(checkTime).__name__ == 'timedelta':
+            hours = int(checkTime.total_seconds() // 3600)
+            minutes = int((checkTime.total_seconds() % 3600) // 60)
+            checkTime = f"{hours}:{minutes}"
+            
+        print(checkTime)
+            
+        formatTime = datetime.strptime(checkTime, '%H:%M').strftime('%H:%M')
+        
+        if inputColumn == 'check_out':
+            formatTime = validationCheckOut(inputColumn, inputMessage, data, formatTime, data['check_in'])
+            
+        return formatTime
+        
+    except ValueError:
+        print("Insert a valid format Time")
+        return validationTime(inputColumn, inputMessage, input(inputMessage), data)
 
 def validationCheckOut(inputColumn, inputMessage, data, checkOutDate, checkInDate):
-    print(checkOutDate, checkInDate)
     if checkOutDate < checkInDate:
         print("Insert a date Out higher date In")
-        return validationDate(inputColumn, inputMessage, data)
+        return validationDate(inputColumn, inputMessage, input(inputMessage), data)
     
     return checkOutDate
 

@@ -19,7 +19,7 @@ def ContactCreate(newContact):
         newContact["phone"] = phone
 
         dateMessage = "Enter date when wrote the review (YYYY-MM-DD): "
-        newContact["date"] = validationDate('date', dateMessage, None)
+        newContact["date"] = validationDate('date', dateMessage, input(dateMessage), None)
 
         subject = input("Enter the subject of review: ")
         newContact["subject"] = subject

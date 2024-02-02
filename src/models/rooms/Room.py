@@ -37,6 +37,6 @@ class Rooms(Model):
         amenities_data = []
         updateRoom = room_data
         
-        super(Rooms, cls).update(cls.table, RoomUpdate(room_data, updateRoom))
+        super(Rooms, cls).update(cls.table, RoomUpdate(room_data, updateRoom, id))
         AmenitiesUpdate(amenitySelect, amenities_data, id)
 

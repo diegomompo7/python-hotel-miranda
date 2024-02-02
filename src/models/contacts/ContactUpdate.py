@@ -25,7 +25,7 @@ def ContactUpdate(contact_data, updateContact):
         updateContact["phone"] = validationExists("phone", phone, contact_data)
 
         dateMessage = f"Enter date when wrote the review (YYYY-MM-DD) (default {contact_data['date']}): "
-        updateContact["date"] = validationDate('date', dateMessage, contact_data)
+        updateContact["date"] = validationDate('date', dateMessage, input(dateMessage), contact_data)
 
         subject = input(
             f"Enter the subject of review (default {contact_data['subject']}): "

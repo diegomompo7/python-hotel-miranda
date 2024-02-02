@@ -23,4 +23,4 @@ class Contacts(Model):
         contact_data = Contacts.view(str(id))
         updateContact = contact_data
 
-        super(Contacts, cls).update(cls.table, ContactUpdate(contact_data, updateContact))
+        super(Contacts, cls).update(cls.table, ContactUpdate(contact_data, updateContact, id))

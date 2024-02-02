@@ -10,25 +10,29 @@ def BookingCreate(newBook, roomId):
         newBook["orderDate"] = date.today().isoformat()
 
         checkInMessage = "Date to entry (YYYY-MM-DD): "
-        check_in = validationDate('check_in', checkInMessage, None)
+        check_in = validationDate('check_in', checkInMessage, input(checkInMessage), None)
         newBook["check_in"] = check_in
 
-        hour_in = input("Date to entry (HH:MM): ")
+        hourInMessage = "Time to entry (HH:MM): "
+        hour_in = validationTime('hour_in', hourInMessage, input(hourInMessage), None)
         newBook["hour_in"] = hour_in
 
-        checkOutMessage = "Date to out(YYYY-MM-DD): "
+        checkOutMessage = "Date to out (YYYY-MM-DD): "
         print(newBook)
-        check_out = validationDate('check_out', checkOutMessage, newBook)
+        check_out = validationDate('check_out', checkOutMessage, input(checkOutMessage), newBook)
         newBook["check_out"] = check_out
 
-        hour_out = input("Date to out (HH:MM): ")
+        hourOutMessage = "Time to out (HH:MM): "
+        hour_out = validationTime('hour_in', hourOutMessage, input(hourOutMessage), None)
         newBook["hour_out"] = hour_out
 
         roomAvailable = executeQuery(
-            "SELECT room_id FROM bookings WHERE check_in > %s OR check_out < %s;",
+            "SELECT DISTINCT room_id FROM bookings WHERE room_id NOT IN (SELECT DISTINCT room_id FROM bookings WHERE (check_in < %s AND check_out > %s));",
             (f"'{check_out}'", f"'{check_in}'"),
             "GET",
         )
+        
+        print(roomAvailable)
 
         for i in range(0, len(roomAvailable)):
             roomId.append(roomAvailable[i]["room_id"])

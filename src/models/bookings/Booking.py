@@ -26,4 +26,4 @@ class Bookings(Model):
         booking_data = Bookings.view(str(id))
         updateBook = booking_data
 
-        super(Bookings, cls).update(cls.table, BookingUpdate(booking_data, updateBook, roomId))
+        super(Bookings, cls).update(cls.table,  BookingUpdate(booking_data, updateBook, roomId), id)

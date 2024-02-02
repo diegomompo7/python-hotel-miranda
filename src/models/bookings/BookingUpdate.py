@@ -10,27 +10,27 @@ def BookingUpdate(booking_data, updateBook, roomId):
 
         checkInMessage = f"Date to entry (YYYY-MM-DD) (default {updateBook['check_in']}): "
         
-        updateBook["check_in"] = validationDate('check_in', checkInMessage, booking_data)
+        updateBook["check_in"] = validationDate('check_in', checkInMessage, input(checkInMessage), booking_data)
 
-        hour_in = input(f"Date to entry (HH:MM)  (default {updateBook['hour_in']}): ")
-        updateBook["hour_in"] = validationExists("hour_in", hour_in, booking_data)
+        hourInMessage = f"Time to entry (HH:MM)  (default {updateBook['hour_in']}): "
+        updateBook["hour_in"] = validationTime('hour_in', hourInMessage, input(hourInMessage), booking_data)
 
-        checkOutMessage = f"Date to entry (YYYY-MM-DD)  (default {updateBook['check_out']}): "
-        updateBook["check_out"] = validationDate('check_out', checkOutMessage, updateBook)
+        checkOutMessage = f"Date to out (YYYY-MM-DD)  (default {updateBook['check_out']}): "
+        updateBook["check_out"] = validationDate('check_out', checkOutMessage, input(checkOutMessage), updateBook)
 
-        hour_out = input(f"Date to entry (HH:MM) (default {updateBook['hour_out']}): ")
-        updateBook["hour_out"] = validationExists(
-            "hour_out", hour_out, booking_data
-        )
+        hourOutMessage = f"Time to out (HH:MM) (default {updateBook['hour_out']}): "
+        updateBook["hour_out"] = validationTime('hour_out', hourOutMessage, input(hourOutMessage), booking_data)
 
         roomAvailable = executeQuery(
-            "SELECT room_id FROM bookings WHERE check_in > %s OR check_out < %s;",
+            "SELECT DISTINCT room_id FROM bookings WHERE room_id NOT IN (SELECT DISTINCT room_id FROM bookings WHERE (check_in < %s AND check_out > %s));",
             (f'\'{updateBook["check_out"]}\'', f'\'{updateBook["check_in"]}\''),
             "GET",
         )
 
         for i in range(0, len(roomAvailable)):
             roomId.append(roomAvailable[i]["room_id"])
+        
+        roomId.append(booking_data["room_id"])
 
         chooseRoomMessage = (
             f"Choose a room {roomId} (defualt {booking_data['room_id']}): "

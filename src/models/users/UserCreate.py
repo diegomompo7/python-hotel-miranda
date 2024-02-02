@@ -23,7 +23,7 @@ def UserCreate(newUser):
         newUser["phone"] = phone
 
         startDateMessage = "Enter started date to work (YYYY-MM-DD): "
-        newUser["startDate"] = validationDate('startDate', startDateMessage, None)
+        newUser["startDate"] = validationDate('startDate', startDateMessage, input(startDateMessage), None)
 
         descriptionJob = input("Enter the description of your job: ")
         newUser["descriptionJob"] = descriptionJob

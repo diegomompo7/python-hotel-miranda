@@ -26,4 +26,4 @@ class Users(Model):
         user_data = Users.view(str(id))
         updateUser = user_data
 
-        super(Users, cls).update(cls.table, UserUpdate(user_data, updateUser))
+        super(Users, cls).update(cls.table, UserUpdate(user_data, updateUser, id))

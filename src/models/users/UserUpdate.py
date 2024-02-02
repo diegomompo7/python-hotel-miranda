@@ -25,7 +25,7 @@ def UserUpdate(user_data, updateUser, roomId):
         updateUser["phone"] = validationExists("phone", phone, user_data)
 
         startDateMessage = f"Enter started date to work (YYYY-MM-DD) (default {user_data.get('startDate')}): "
-        updateUser["startDate"] = validationDate('startDate', startDateMessage, user_data)
+        updateUser["startDate"] = validationDate('startDate', startDateMessage, input(startDateMessage), user_data)
 
 
         descriptionJob = input(

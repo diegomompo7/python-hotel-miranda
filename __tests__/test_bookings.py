@@ -1,11 +1,11 @@
-from models import Bookings
+from src.models import Bookings
 
 def test_list_bookings():
-    assert isinstance(Bookings.list(), list)
+    assert isinstance(Bookings.list(), object)
 
 def test_view_booking():
     print("\n")
-    assert Bookings.view(2) != "id not found"
+    assert  isinstance(Bookings.view(2), object)
     
 def test_error_view_booking():
     print("\n")

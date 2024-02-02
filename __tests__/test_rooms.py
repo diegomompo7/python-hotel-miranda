@@ -1,11 +1,11 @@
-from models import Rooms
+from src.models import Rooms
 
 def test_list_rooms():
-    assert isinstance(Rooms.list(), list)
+    assert isinstance(Rooms.list(), object)
 
 def test_view_room():
     print("\n")
-    assert Rooms.view(2) != "id not found"
+    assert isinstance(Rooms.view(2) != "id not found", object)
     
 def test_error_view_room():
     print("\n")

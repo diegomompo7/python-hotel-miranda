@@ -1,4 +1,4 @@
-from sql import mydb, cursorObject
+from src.db.sql import mydb, cursorObject
 
 sqlFile = "src/scripts/HotelMiranda.sql"
 

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import json
 from datetime import date
-from sql import executeQuery
+from src.db.sql import executeQuery
 
 
 class Model(ABC):

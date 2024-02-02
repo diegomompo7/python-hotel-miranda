@@ -1,61 +1,8 @@
-from .models import *
-from ..validators.validatorExists import *
-from ..validators.validatorPositive import *
-from ..validators.validatorOptions import *
-from ..validators.validatorDate import *
+from ..Model import *
+from datetime import *
+from ...validators.validators import *
 
-
-
-class Users(Model):
-    table = "users"
-
-    def __init__(self, id):
-        self.id = id
-
-    def create():
-        newUser = {}
-        fields = executeQuery("SHOW FIELDS FROM %s", Users.table, "GET")
-        for i in range(1, len(fields)):
-            newUser[fields[i]["Field"]] = ""
-
-        typeJob = ["Manager", "Recepcionist", "Cleaning Room"]
-        statusUser = ["ACTIVE", "INACTIVE"]
-
-        photo = input("Enter your profile image: ")
-        newUser["photo"] = photo
-
-        fullName = input("Enter your name and surname: ")
-        newUser["fullName"] = fullName
-
-        jobMessage = f"Enter your job {typeJob}: "
-        job = validationOption("job", jobMessage, None, typeJob)
-        newUser["job"] = job
-
-        email = input("Enter your email: ")
-        newUser["email"] = email
-
-        phone = input("Enter your phone: ")
-        newUser["phone"] = phone
-
-        startDateMessage = "Enter started date to work (YYYY-MM-DD): "
-        newUser["startDate"] = validationDate('startDate', startDateMessage, None)
-
-        descriptionJob = input("Enter the description of your job: ")
-        newUser["descriptionJob"] = descriptionJob
-
-        statusMessage = f"Enter the status {statusUser}: "
-        status = validationOption("status", statusMessage, None, statusUser)
-        newUser["status"] = status
-
-        password = input("Enter your password: ")
-        newUser["password"] = password
-
-        Model.create(Users.table, newUser)
-
-    def update(id):
-        user_data = Users.view(str(id))
-        updateUser = user_data
-
+def UserUpdate(user_data, updateUser, roomId):
         typeJob = ["Manager", "Recepcionist", "Cleaning Room"]
         statusUser = ["ACTIVE", "INACTIVE"]
 
@@ -96,5 +43,7 @@ class Users(Model):
 
         password = input(f"Enter your password: ")
         updateUser["password"] = validationExists("password", password, user_data)
+        
+        return updateUser
 
-        Model.update(Users.table, updateUser, id)
+        

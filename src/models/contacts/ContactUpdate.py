@@ -1,67 +1,10 @@
-from .models import *
-from datetime import date
+from ..Model import *
+from datetime import *
+from ...validators.validators import *
 
-from ..validators.validatorExists import *
-from ..validators.validatorPositive import *
-from ..validators.validatorOptions import *
-from ..validators.validatorDate import *
-
-
-class Contacts(Model):
-    table = "contacts"
-
-    def __init__(self, id):
-        self.id = id
-
-    def create():
-        newContact = {}
-        fields = executeQuery("SHOW FIELDS FROM %s", Contacts.table, "GET")
-        for i in range(1, len(fields)):
-            newContact[fields[i]["Field"]] = ""
-
-        userImg = input("Enter your image: ")
-        newContact["userImg"] = userImg
-
-        name = input("Enter your name: ")
-        newContact["name"] = name
-
-        surname = input("Enter your surname: ")
-        newContact["surname"] = surname
-
-        email = input("Enter your email: ")
-        newContact["email"] = email
-
-        phone = input("Enter your phone: ")
-        newContact["phone"] = phone
-
-        dateMessage = "Enter date when wrote the review (YYYY-MM-DD): "
-        newContact["date"] = validationDate('date', dateMessage, None)
-
-        subject = input("Enter the subject of review: ")
-        newContact["subject"] = subject
-
-        message = input("Enter your message: ")
-        newContact["message"] = message
-
-        messageStars = "Enter the stars (1-Lowest, 5-Highest): "
-
-        stars = validationPositive("stars", messageStars, None)
-
-        while 5 < stars:
-            print("Please enter a number between 1 and 5.")
-            stars = validationPositive("photos", messageStars, None)
-
-        newContact["stars"] = stars
-
-        newContact["is_archived"] = False
-
-        Model.create(Contacts.table, newContact)
-
-    def update(id):
-        contact_data = Contacts.view(str(id))
-        updateContact = contact_data
+def ContactUpdate(contact_data, updateContact):
         optionArchived = [False, True]
-
+        
         userImg = input(f"Enter your image (default {contact_data['userImg']}): ")
         updateContact["userImg"] = validationExists(
             "userImg", userImg, contact_data
@@ -113,5 +56,3 @@ class Contacts(Model):
         )
 
         updateContact["is_archived"] = isArchived
-
-        Model.update(Contacts.table, updateContact, id)

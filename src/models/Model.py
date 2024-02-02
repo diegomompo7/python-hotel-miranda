@@ -36,7 +36,6 @@ class Model(ABC):
             (table, ",".join(list(data.keys())), tuple(data.values())),
             "POST",
         )
-        print(type(lastId))
         return lastId
 
     @classmethod

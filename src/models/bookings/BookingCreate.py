@@ -18,7 +18,6 @@ def BookingCreate(newBook, roomId):
         newBook["hour_in"] = hour_in
 
         checkOutInput = "Date to out (YYYY-MM-DD): "
-        print(newBook)
         check_out = validationDate('check_out', checkOutInput, input(checkOutInput), newBook)
         newBook["check_out"] = check_out
 
@@ -32,7 +31,6 @@ def BookingCreate(newBook, roomId):
             "GET",
         )
         
-        print(roomAvailable)
 
         for i in range(0, len(roomAvailable)):
             roomId.append(roomAvailable[i]["room_id"])

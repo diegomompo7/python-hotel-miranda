@@ -6,10 +6,8 @@ def validationDate(inputColumn, inputMessage, inputValue, data):
     try:
         checkDate = validationExists(inputColumn, inputValue, data)
         
-        print(type(checkDate).__name__)
         
         if type(checkDate).__name__ == 'date':
-            print("True")
             checkDate = checkDate.isoformat()
             
         formatDate = datetime.strptime(checkDate, '%Y-%m-%d').strftime('%Y-%m-%d')
@@ -27,14 +25,11 @@ def validationTime(inputColumn, inputMessage, inputValue, data):
     try:
         checkTime = validationExists(inputColumn, inputValue, data)
         
-        print(type(checkTime).__name__)
         
         if type(checkTime).__name__ == 'timedelta':
             hours = int(checkTime.total_seconds() // 3600)
             minutes = int((checkTime.total_seconds() % 3600) // 60)
             checkTime = f"{hours}:{minutes}"
-            
-        print(checkTime)
             
         formatTime = datetime.strptime(checkTime, '%H:%M').strftime('%H:%M')
         

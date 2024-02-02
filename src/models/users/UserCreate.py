@@ -6,31 +6,33 @@ def UserCreate(newUser):
         typeJob = ["Manager", "Recepcionist", "Cleaning Room"]
         statusUser = ["ACTIVE", "INACTIVE"]
 
-        photo = input("Enter your profile image: ")
-        newUser["photo"] = photo
+        photoInput = "Enter your profile image: "
+        newUser["photo"] = validationEmpty(photoInput, input(photoInput))
 
-        fullName = input("Enter your name and surname: ")
-        newUser["fullName"] = fullName
-
-        jobMessage = f"Enter your job {typeJob}: "
-        job = validationOption("job", jobMessage, None, typeJob)
+        fullNameInput = "Enter your name and surname: "
+        newUser["fullName"] = validationEmpty(fullNameInput, input(fullNameInput))
+        
+        jobInput = f"Enter your job {typeJob}: "
+        job = validationOption("job", jobInput, None, typeJob)
         newUser["job"] = job
 
-        email = input("Enter your email: ")
-        newUser["email"] = email
+        emailInput = "Enter your email: "
+        newUser["email"] = validationEmail("email", emailInput, input(emailInput), None)
 
-        phone = input("Enter your phone: ")
-        newUser["phone"] = phone
+        phoneInput = "Enter your phone: "
+        newUser["phone"] = validationPhone("phone", phoneInput, input(phoneInput), None)
+        
+        startDateInput = "Enter started date to work (YYYY-MM-DD): "
+        newUser["startDate"] = validationDate('startDate', startDateInput, input(startDateInput), None)
 
-        startDateMessage = "Enter started date to work (YYYY-MM-DD): "
-        newUser["startDate"] = validationDate('startDate', startDateMessage, input(startDateMessage), None)
+        descriptionJobInput = "Enter the description of your job: "
+        newUser["descriptionJob"] = validationEmpty(descriptionJobInput, input(descriptionJobInput))
 
-        descriptionJob = input("Enter the description of your job: ")
-        newUser["descriptionJob"] = descriptionJob
-
-        statusMessage = f"Enter the status {statusUser}: "
-        status = validationOption("status", statusMessage, None, statusUser)
+        statusInput = f"Enter the status {statusUser}: "
+        status = validationOption("status", statusInput, None, statusUser)
         newUser["status"] = status
 
-        password = input("Enter your password: ")
-        newUser["password"] = password
+        passwordInput = "Enter your password: "
+        newUser["password"] = validationPassword("password", passwordInput, input(passwordInput), None)
+        
+        return newUser

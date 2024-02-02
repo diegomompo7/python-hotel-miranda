@@ -18,14 +18,14 @@ def ContactUpdate(contact_data, updateContact):
             "surname", surname, contact_data
         )
 
-        email = input(f"Enter your email (default {contact_data['email']}): ")
-        updateContact["email"] = validationExists("email", email, contact_data)
+        emailInput = f"Enter your email (default {contact_data['email']}): "
+        updateContact["email"] = validationEmail("email", emailInput, input(emailInput), contact_data)
+        
+        phoneInput = f"Enter your phone (default {contact_data['phone']}): "
+        updateContact["phone"] = validationPhone("phone", phoneInput, input(phoneInput), contact_data)
 
-        phone = input(f"Enter your phone (default {contact_data['phone']}): ")
-        updateContact["phone"] = validationExists("phone", phone, contact_data)
-
-        dateMessage = f"Enter date when wrote the review (YYYY-MM-DD) (default {contact_data['date']}): "
-        updateContact["date"] = validationDate('date', dateMessage, input(dateMessage), contact_data)
+        dateInput = f"Enter date when wrote the review (YYYY-MM-DD) (default {contact_data['date']}): "
+        updateContact["date"] = validationDate('date', dateInput, input(dateInput), contact_data)
 
         subject = input(
             f"Enter the subject of review (default {contact_data['subject']}): "
@@ -34,25 +34,27 @@ def ContactUpdate(contact_data, updateContact):
             "subject", subject, contact_data
         )
 
-        message = input(f"Enter your message (default {contact_data['message']}): ")
+        messageInput = input(f"Enter your message (default {contact_data['message']}): ")
         updateContact["message"] = validationExists(
-            "message", message, contact_data
+            "message", messageInput, contact_data
         )
 
-        messageStars = (
+        starsInput = input(
             f"Enter the stars (1-Lowest, 5-Highest) (default {contact_data['stars']}): "
         )
-        stars = validationPositive("stars", messageStars, contact_data)
+        stars = validationPositive("stars", starsInput, contact_data)
 
         while stars < 1 or 5 < stars:
             print("Please enter a number between 1 and 5.")
-            stars = validationPositive("stars", messageStars, contact_data)
+            stars = validationPositive("stars", starsInput, contact_data)
 
         updateContact["stars"] = stars
 
-        isArchivedMessage = f"Enter if you want archived the review (default {contact_data['is_archived']}): "
+        isArchivedInput = f"Enter if you want archived the review (default {contact_data['is_archived']}): "
         isArchived = validationOption(
-            "is_archived", isArchivedMessage, contact_data, optionArchived
+            "is_archived", isArchivedInput, contact_data, optionArchived
         )
 
         updateContact["is_archived"] = isArchived
+        
+        return updateContact

@@ -3,38 +3,40 @@ from datetime import *
 from ...validators.validators import *
 
 def ContactCreate(newContact):
-        userImg = input("Enter your image: ")
-        newContact["userImg"] = userImg
+        userImgInput = "Enter your image: "
+        newContact["userImg"] = validationEmpty(userImgInput, input(userImgInput))
 
-        name = input("Enter your name: ")
-        newContact["name"] = name
+        nameInput = "Enter your name: "
+        newContact["name"] = validationEmpty(nameInput, input(nameInput))
 
-        surname = input("Enter your surname: ")
-        newContact["surname"] = surname
+        surnameInput = "Enter your surname: "
+        newContact["surname"] = validationEmpty(surnameInput, input(surnameInput))
 
-        email = input("Enter your email: ")
-        newContact["email"] = email
+        emailInput = "Enter your email: "
+        newContact["email"] = validationEmail("email", emailInput, input(emailInput), None)
 
-        phone = input("Enter your phone: ")
-        newContact["phone"] = phone
+        phoneInput = "Enter your phone: "
+        newContact["phone"] = validationPhone("phone", phoneInput, input(phoneInput), None)
 
-        dateMessage = "Enter date when wrote the review (YYYY-MM-DD): "
-        newContact["date"] = validationDate('date', dateMessage, input(dateMessage), None)
+        dateInput = "Enter date when wrote the review (YYYY-MM-DD): "
+        newContact["date"] = validationDate('date', dateInput, input(dateInput), None)
 
-        subject = input("Enter the subject of review: ")
-        newContact["subject"] = subject
+        subjectInput = "Enter the subject of review: "
+        newContact["subject"] = validationEmpty(subjectInput, input(subjectInput))
 
-        message = input("Enter your message: ")
-        newContact["message"] = message
+        messageInput = "Enter your message: "
+        newContact["message"] = validationEmpty(messageInput, input(messageInput))
 
-        messageStars = "Enter the stars (1-Lowest, 5-Highest): "
+        starsInput = "Enter the stars (1-Lowest, 5-Highest): "
 
-        stars = validationPositive("stars", messageStars, None)
+        stars = validationPositive("stars", starsInput, None)
 
         while 5 < stars:
             print("Please enter a number between 1 and 5.")
-            stars = validationPositive("photos", messageStars, None)
+            stars = validationPositive("photos", starsInput, None)
 
         newContact["stars"] = stars
 
         newContact["is_archived"] = False
+        
+        return newContact

@@ -1,4 +1,6 @@
 from datetime import datetime, date
+from email_validator import validate_email, EmailNotValidError
+import re
 
 def validationDate(inputColumn, inputMessage, inputValue, data):
     try:
@@ -102,3 +104,61 @@ def validationPositive(inputColumn, inputMessage, data):
     except ValueError:
         print("Please enter a valid integer.")
         return validationPositive(inputColumn, inputMessage, data)
+
+def validationEmail(inputColumn, inputMessage, inputValue, data):
+    
+    try:
+        checkEmail = validationExists(inputColumn, inputValue, data)
+        
+        validateEmail = validate_email(checkEmail)
+        
+        return validateEmail["email"]
+    
+    except EmailNotValidError as e:
+        print("Insert a valid email, please")
+        return validationEmail(inputColumn, inputMessage, input(inputMessage), data)
+    
+def validationPhone(inputColumn, inputMessage, inputValue, data):
+    
+    try:
+        checkPhone = validationExists(inputColumn, inputValue, data)
+        
+        pattern = re.compile("(0|91)?[6-9][0-9]{8}")
+        
+        if(pattern.match(checkPhone)):
+            return checkPhone
+        
+        print("Insert a valid phone, please")
+        return validationPhone(inputColumn, inputMessage, input(inputMessage), data)
+        
+    except ValueError as e:
+        print("Insert a valid phone, please")
+        return validationPhone(inputColumn, inputMessage, input(inputMessage), data)
+    
+    
+def validationPassword(inputColumn, inputMessage, inputValue, data):
+    
+    try:
+        checkPassword = validationExists(inputColumn, inputValue, data)
+        
+        pattern = re.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,20}$")
+        
+        if(re.search(pattern, checkPassword)):
+            return checkPassword
+        
+        print("Insert a valid format password, please")
+        return validationPassword(inputColumn, inputMessage, input(inputMessage), data)
+        
+    except ValueError as e:
+        print("The field must be completed")
+        return validationPassword(inputColumn, inputMessage, input(inputMessage), data)
+    
+
+def validationEmpty(inputMessage, inputValue):
+    
+    if inputValue != "":
+        
+       return inputValue
+    
+    print("The field must be completed")
+    return validationEmpty(inputMessage, input(inputMessage))

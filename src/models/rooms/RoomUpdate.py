@@ -31,10 +31,10 @@ def RoomUpdate(room_data, updateRoom):
 
         updateRoom["photos"] = json.dumps(photos)
 
-        roomTypeMessage = (
+        roomTypeInput = (
             f"Insert a room type {type} (default {room_data['roomType']}): "
         )
-        roomType = validationOption("roomType", roomTypeMessage, room_data, type)
+        roomType = validationOption("roomType", roomTypeInput, room_data, type)
         updateRoom["roomType"] = roomType
 
         roomNumber = input(
@@ -49,23 +49,23 @@ def RoomUpdate(room_data, updateRoom):
         checkDescription = validationExists("description", description, room_data)
         updateRoom["description"] = checkDescription
 
-        messagePriceNight = (
+        priceNightInput = (
             f"Insert a price per night (default {room_data['priceNight']}): "
         )
         priceNight = validationPositive(
-            "priceNight", messagePriceNight, room_data
+            "priceNight", priceNightInput, room_data
         )
         updateRoom["priceNight"] = priceNight
 
-        offerMessage = (
+        offerInput = (
             f"Insert if there's offer or not {isOffer} (default {room_data['offer']}): "
         )
-        offer = validationOption("offer", offerMessage, room_data, isOffer)
+        offer = validationOption("offer", offerInput, room_data, isOffer)
         updateRoom["offer"] = offer
 
         if offer == "YES":
-            messageDiscount = f"Insert a discount (default {room_data['discount']}): "
-            discount = validationPositive("discount", messageDiscount, room_data)
+            discountInput = f"Insert a discount (default {room_data['discount']}): "
+            discount = validationPositive("discount", discountInput, room_data)
         else:
             discount = 0
 
@@ -74,15 +74,15 @@ def RoomUpdate(room_data, updateRoom):
         cancellation = input(
             f"Insert a cancellation (default {room_data['cancellation']}): "
         )
-        checkRoomNumber = validationExists(
+        checkCancellation = validationExists(
             "cancellation", cancellation, room_data
         )
-        updateRoom["cancellation"] = checkRoomNumber
+        updateRoom["cancellation"] = checkCancellation
 
-        statusMessage = (
+        statusInput = (
             f"Insert a status {roomStatus} (default {room_data['status']}): "
         )
-        status = validationOption("status", statusMessage, room_data, roomStatus)
+        status = validationOption("status", statusInput, room_data, roomStatus)
         updateRoom["status"] = status
 
         return updateRoom

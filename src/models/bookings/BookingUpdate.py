@@ -8,18 +8,18 @@ def BookingUpdate(booking_data, updateBook, roomId):
         name = input(f"What's your name (default {updateBook['name']}): ")
         updateBook["name"] = validationExists("name", name, booking_data)
 
-        checkInMessage = f"Date to entry (YYYY-MM-DD) (default {updateBook['check_in']}): "
+        checkInInput = f"Date to entry (YYYY-MM-DD) (default {updateBook['check_in']}): "
         
-        updateBook["check_in"] = validationDate('check_in', checkInMessage, input(checkInMessage), booking_data)
+        updateBook["check_in"] = validationDate('check_in', checkInInput, input(checkInInput), booking_data)
 
-        hourInMessage = f"Time to entry (HH:MM)  (default {updateBook['hour_in']}): "
-        updateBook["hour_in"] = validationTime('hour_in', hourInMessage, input(hourInMessage), booking_data)
+        hourInInput = f"Time to entry (HH:MM)  (default {updateBook['hour_in']}): "
+        updateBook["hour_in"] = validationTime('hour_in', hourInInput, input(hourInInput), booking_data)
 
-        checkOutMessage = f"Date to out (YYYY-MM-DD)  (default {updateBook['check_out']}): "
-        updateBook["check_out"] = validationDate('check_out', checkOutMessage, input(checkOutMessage), updateBook)
+        checkOutInput = f"Date to out (YYYY-MM-DD)  (default {updateBook['check_out']}): "
+        updateBook["check_out"] = validationDate('check_out', checkOutInput, input(checkOutInput), updateBook)
 
-        hourOutMessage = f"Time to out (HH:MM) (default {updateBook['hour_out']}): "
-        updateBook["hour_out"] = validationTime('hour_out', hourOutMessage, input(hourOutMessage), booking_data)
+        hourOutInput = f"Time to out (HH:MM) (default {updateBook['hour_out']}): "
+        updateBook["hour_out"] = validationTime('hour_out', hourOutInput, input(hourOutInput), booking_data)
 
         roomAvailable = executeQuery(
             "SELECT DISTINCT room_id FROM bookings WHERE room_id NOT IN (SELECT DISTINCT room_id FROM bookings WHERE (check_in < %s AND check_out > %s));",
@@ -32,11 +32,11 @@ def BookingUpdate(booking_data, updateBook, roomId):
         
         roomId.append(booking_data["room_id"])
 
-        chooseRoomMessage = (
+        chooseRoomInput = (
             f"Choose a room {roomId} (defualt {booking_data['room_id']}): "
         )
         checkRoom = validationOption(
-            "room_id", chooseRoomMessage, booking_data, roomId
+            "room_id", chooseRoomInput, booking_data, roomId
         )
         updateBook["room_id"] = checkRoom
 
@@ -47,11 +47,11 @@ def BookingUpdate(booking_data, updateBook, roomId):
             "specialRequest", specialRequest, booking_data
         )
 
-        statusMessage = (
+        statusInput = (
             f"Enter a status {statusBooking} (default {booking_data['status']}): "
         )
         status = validationOption(
-            "status", statusMessage, booking_data, statusBooking
+            "status", statusInput, booking_data, statusBooking
         )
         updateBook["status"] = status
         

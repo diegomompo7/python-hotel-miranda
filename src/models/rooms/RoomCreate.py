@@ -20,35 +20,35 @@ def RoomCreate(newRoom):
 
         newRoom["photos"] = f"{json.dumps(photos)}"
 
-        roomTypeMessage = f"Insert a room type {type}: "
-        roomType = validationOption("roomType", roomTypeMessage, None, type)
+        roomTypeInput = f"Insert a room type {type}: "
+        roomType = validationOption("roomType", roomTypeInput, None, type)
         newRoom["roomType"] = roomType
 
-        roomNumber = input("Insert a room number: ")
-        newRoom["roomNumber"] = roomNumber
+        roomNumberInput = "Insert a room number: "
+        newRoom["roomNumber"] = validationEmpty(roomNumberInput, input(roomNumberInput))
 
-        description = input("Insert a description: ")
-        newRoom["description"] = description
+        descriptionInput = "Insert a description: "
+        newRoom["description"] = validationEmpty(descriptionInput, input(descriptionInput))
 
-        messagePriceNight = "Insert a price per night: "
-        priceNight = validationPositive("priceNight", messagePriceNight, None)
+        priceNightInput = "Insert a price per night: "
+        priceNight = validationPositive("priceNight", priceNightInput, None)
         newRoom["priceNight"] = priceNight
 
-        offerMessage = f"Insert if there's offer or not {isOffer}: "
-        offer = validationOption(5, offerMessage, None, isOffer)
+        offerInput = f"Insert if there's offer or not {isOffer}: "
+        offer = validationOption(5, offerInput, None, isOffer)
 
         newRoom["offer"] = offer
 
         if offer == "YES":
-            messageDiscount = "Insert a discount: "
-            discount = validationPositive("discount", messageDiscount, None)
+            discountInput = "Insert a discount: "
+            discount = validationPositive("discount", discountInput, None)
         else:
             discount = 0
 
         newRoom["discount"] = discount
 
-        cancellation = input("Insert a cancellation: ")
-        newRoom["cancellation"] = cancellation
+        cancellationInput = input("Insert a cancellation: ")
+        newRoom["cancellation"] = validationEmpty(cancellationInput, input(cancellationInput))
         newRoom["status"] = "Available"
         
         return newRoom
@@ -56,8 +56,9 @@ def RoomCreate(newRoom):
             
 def AmenitiesCreate(newAmenity, idRoom):
     
-        amenitiesInput = input(f"Insert amenities: ")
-        amenities = amenitiesInput.split(",")
+        amenitiesInput = "Insert amenities: "
+        amenitiesValue = validationEmpty(amenitiesInput, input(amenitiesInput))
+        amenities = amenitiesValue.split(",")
         
         for amenity in amenities:
             newAmenity["amenity"] = amenity

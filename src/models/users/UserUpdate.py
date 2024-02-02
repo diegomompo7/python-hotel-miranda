@@ -14,18 +14,18 @@ def UserUpdate(user_data, updateUser, roomId):
         )
         updateUser["fullName"] = validationExists("fullName", fullName, user_data)
 
-        jobMessage = f"Enter your job {typeJob} (default {user_data.get('job')}): "
-        job = validationOption("job", jobMessage, user_data, typeJob)
+        jobInput = f"Enter your job {typeJob} (default {user_data.get('job')}): "
+        job = validationOption("job", jobInput, user_data, typeJob)
         updateUser["job"] = job
 
-        email = input(f"Enter your email (default {user_data.get('email')}): ")
-        updateUser["email"] = validationExists("email", email, user_data)
+        emailInput = f"Enter your email (default {user_data['email']}): "
+        updateUser["email"] = validationEmail("email", emailInput, input(emailInput), user_data)
+        
+        phoneInput = f"Enter your phone (default {user_data['phone']}): "
+        updateUser["phone"] = validationPhone("phone", phoneInput, input(phoneInput), user_data)
 
-        phone = input(f"Enter your phone (default {user_data.get('phone')}): ")
-        updateUser["phone"] = validationExists("phone", phone, user_data)
-
-        startDateMessage = f"Enter started date to work (YYYY-MM-DD) (default {user_data.get('startDate')}): "
-        updateUser["startDate"] = validationDate('startDate', startDateMessage, input(startDateMessage), user_data)
+        startDateInput = f"Enter started date to work (YYYY-MM-DD) (default {user_data.get('startDate')}): "
+        updateUser["startDate"] = validationDate('startDate', startDateInput, input(startDateInput), user_data)
 
 
         descriptionJob = input(
@@ -35,14 +35,14 @@ def UserUpdate(user_data, updateUser, roomId):
             "descriptionJob", descriptionJob, user_data
         )
 
-        statusMessage = (
+        statusInput = (
             f"Enter the status {statusUser} (default {user_data.get('status')}): "
         )
-        status = validationOption("status", statusMessage, user_data, statusUser)
+        status = validationOption("status", statusInput, user_data, statusUser)
         updateUser["status"] = status
 
-        password = input(f"Enter your password: ")
-        updateUser["password"] = validationExists("password", password, user_data)
+        passwordInput = f"Enter your password: "
+        updateUser["password"] = validationPassword("password", passwordInput, input(passwordInput), user_data)
         
         return updateUser
 

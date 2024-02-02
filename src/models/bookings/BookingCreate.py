@@ -4,26 +4,26 @@ from ...validators.validators import *
 
 
 def BookingCreate(newBook, roomId):
-        name = input("What's your name: ")
-        newBook["name"] = name
+        nameInput = "What's your name: "
+        newBook["name"] = validationEmpty(nameInput, input(nameInput))
 
         newBook["orderDate"] = date.today().isoformat()
 
-        checkInMessage = "Date to entry (YYYY-MM-DD): "
-        check_in = validationDate('check_in', checkInMessage, input(checkInMessage), None)
+        checkInInput = "Date to entry (YYYY-MM-DD): "
+        check_in = validationDate('check_in', checkInInput, input(checkInInput), None)
         newBook["check_in"] = check_in
 
-        hourInMessage = "Time to entry (HH:MM): "
-        hour_in = validationTime('hour_in', hourInMessage, input(hourInMessage), None)
+        hourInInput = "Time to entry (HH:MM): "
+        hour_in = validationTime('hour_in', hourInInput, input(hourInInput), None)
         newBook["hour_in"] = hour_in
 
-        checkOutMessage = "Date to out (YYYY-MM-DD): "
+        checkOutInput = "Date to out (YYYY-MM-DD): "
         print(newBook)
-        check_out = validationDate('check_out', checkOutMessage, input(checkOutMessage), newBook)
+        check_out = validationDate('check_out', checkOutInput, input(checkOutInput), newBook)
         newBook["check_out"] = check_out
 
-        hourOutMessage = "Time to out (HH:MM): "
-        hour_out = validationTime('hour_in', hourOutMessage, input(hourOutMessage), None)
+        hourOutInput = "Time to out (HH:MM): "
+        hour_out = validationTime('hour_in', hourOutInput, input(hourOutInput), None)
         newBook["hour_out"] = hour_out
 
         roomAvailable = executeQuery(
@@ -37,8 +37,8 @@ def BookingCreate(newBook, roomId):
         for i in range(0, len(roomAvailable)):
             roomId.append(roomAvailable[i]["room_id"])
 
-        chooseRoomMessage = f"Choose a room {roomId}: "
-        checkRoom = validationOption("room_id", chooseRoomMessage, None, roomId)
+        chooseRoomInput = f"Choose a room {roomId}: "
+        checkRoom = validationOption("room_id", chooseRoomInput, None, roomId)
         newBook["room_id"] = checkRoom
 
         specialRequest = input("Enter a special request (OPTIONAL): ")
